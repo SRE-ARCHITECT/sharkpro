@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SharkPro | Gestão Simplificada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="description" content="Sistema completo para gestão de empréstimos e cobranças.">
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CSS principal com atributo media -->
+    <link rel="stylesheet" href="style.css" media="all">
+    
+    <!-- Fontes otimizadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Link para o Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <h1>SharkPro</h1>
+            <p class="subtitle">Sistema de Gestão de Empréstimos e Cobranças</p>
+            <div class="login-form">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Sua senha">
+                </div>
+                <button id="loginButton" class="btn primary-btn">Entrar</button>
+            </div>
+            <footer class="login-footer">
+                <p>&copy; 2024 SharkPro. Todos os direitos reservados.</p>
+                <button id="requestAccessBtn" class="btn secondary-btn">Solicitar Acesso</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modal: Solicitar Acesso -->
+    <div id="requestAccessModal" class="modal">
+        <div class="modal-content">
+            <h2>Solicitar Acesso</h2>
+            <p>Preencha os dados abaixo para solicitar seu teste grátis de 7 dias. Você receberá seu usuário e senha em até 24 horas.</p>
+            <div class="form-group">
+                <label for="reqName">Nome Completo</label>
+                <input type="text" id="reqName" placeholder="Seu nome completo" required>
+            </div>
+            <div class="form-group">
+                <label for="reqBirthDate">Data de Nascimento</label>
+                <input type="text" id="reqBirthDate" placeholder="DD/MM/AAAA" required>
+            </div>
+            <div class="form-group">
+                <label for="reqCPF">CPF</label>
+                <input type="text" id="reqCPF" placeholder="000.000.000-00" required>
+            </div>
+            <div class="form-group">
+                <label for="reqCNPJ">CNPJ (Opcional)</label>
+                <input type="text" id="reqCNPJ" placeholder="00.000.000/0000-00">
+            </div>
+            <div class="form-group">
+                <label for="reqEmail">Email Principal</label>
+                <input type="email" id="reqEmail" placeholder="seu.email@exemplo.com" required>
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelRequestAccess" class="btn secondary-btn">Cancelar</button>
+                <button id="sendRequestAccess" class="btn primary-btn">Enviar Solicitação</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainContent" style="display: none;">
+        <header class="app-header">
+            <div class="header-left">
+                <h1>SharkPro</h1>
+            </div>
+            <div class="header-right">
+                <button id="adminButton" 
+                        class="btn primary-btn" 
+                        aria-label="Abrir painel de administração">
+                    <span class="icon" aria-hidden="true">⚙️</span>
+                    Administração
+                </button>
+                <button id="darkModeToggle" 
+                        title="Alternar modo escuro"
+                        aria-label="Alternar modo escuro">
+                    <span id="darkModeIcon" aria-hidden="true">🌙</span>
+                </button>
+                <button id="logoutButton" 
+                        class="btn secondary-btn"
+                        aria-label="Sair do sistema">
+                    Sair
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="action-buttons-container">
+                <button id="add-client-btn" 
+                        class="btn primary-btn"
+                        aria-label="Adicionar novo cliente">
+                    <span class="icon" aria-hidden="true">👤</span>
+                    Novo Cliente
+                </button>
+                <button id="add-loan-btn" 
+                        class="btn secondary-btn"
+                        aria-label="Criar novo empréstimo">
+                    <span class="icon" aria-hidden="true">💰</span>
+                    Novo Empréstimo
+                </button>
+            </div>
+
+            <!-- Navegação por Abas -->
+            <nav class="nav-tabs">
+                <button class="nav-link active" data-view="dashboard-view">Dashboard</button>
+                <button class="nav-link" data-view="clients-view">Clientes</button>
+                <button class="nav-link" data-view="loans-view">Empréstimos</button>
+            </nav>
+
+            <!-- Conteúdo das Abas -->
+            <div id="view-container">
+                <!-- Visão do Dashboard -->
+                <div id="dashboard-view" class="view active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <h3>Total de Clientes</h3>
+                            <p id="total-clients-stat">0</p>
+                            <span class="card-icon">👥</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Empréstimos Ativos</h3>
+                            <p id="active-loans-stat">0</p>
+                            <span class="card-icon">📈</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Cobranças Pendentes</h3>
+                            <p id="pending-collections-stat">0</p>
+                            <span class="card-icon">⚠️</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Valor Total em Aberto</h3>
+                            <p id="total-outstanding-stat">R$ 0,00</p>
+                            <span class="card-icon">💲</span>
+                        </div>
+                    </div>
+
+                    <!-- Nova seção para clientes com dívidas pendentes -->
+                    <div class="pending-debts-section" style="margin-top: 2rem;">
+                        <h2>Clientes com Empréstimos</h2>
+                        <div class="search-container">
+                            <div class="search-input-wrapper">
+                                <input type="text" id="pendingCpfFilter" placeholder="Filtrar por CPF..." autocomplete="off">
+                                <button class="clear-search-btn" id="clearPendingCpfFilter">✖</button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80px;">Status</th>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-debts-table-body">
+                                    <!-- Dados dos clientes com dívidas pendentes serão inseridos aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visão de Clientes -->
+                <div id="clients-view" class="view">
+                    <h2>Lista de Clientes</h2>
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="clientSearchCPF" placeholder="Buscar cliente por CPF..." autocomplete="off">
+                            <button class="clear-search-btn" id="clearClientSearch">✖</button>
+                        </div>
+                    </div>
+                    <!-- Conteúdo da lista de clientes será renderizado aqui -->
+                </div>
+
+                <!-- Visão de Empréstimos -->
+                <div id="loans-view" class="view">
+                    <h2>Lista de Empréstimos</h2>
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="loanSearchCPF" placeholder="Buscar empréstimo por CPF do cliente..." autocomplete="off">
+                            <button class="clear-search-btn" id="clearLoanSearch">✖</button>
+                        </div>
+                    </div>
+                    <!-- Conteúdo da lista de empréstimos será renderizado aqui -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Buscar por CPF -->
+    <div id="searchCPFModal" class="modal">
+        <div class="modal-content">
+            <h2>Buscar Cliente por CPF</h2>
+            <div class="form-group">
+                <label for="searchCPFInput">CPF do Cliente:</label>
+                <input type="text" id="searchCPFInput" placeholder="Digite o CPF" autocomplete="off">
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelSearchCPF" class="btn secondary-btn">Cancelar</button>
+                <button id="confirmSearchCPF" class="btn primary-btn">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Cadastrar Novo Cliente -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <h2>Cadastrar Novo Cliente</h2>
+            <div class="form-group">
+                <label for="clientName">Nome Completo</label>
+                <input type="text" id="clientName" placeholder="Nome completo do cliente" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="clientCPF">CPF</label>
+                    <input type="text" id="clientCPF" placeholder="000.000.000-00" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientRG">RG</label>
+                    <input type="text" id="clientRG" placeholder="00.000.000-0" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="clientBirthDate">Data de Nascimento</label>
+                <input type="text" id="clientBirthDate" placeholder="DD/MM/AAAA" required>
+            </div>
+            <div class="form-group">
+                <button id="consultCPFBtn" class="btn secondary-btn" style="margin-top: 5px;">Consultar CPF</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="clientMotherName">Nome da Mãe</label>
+                    <input type="text" id="clientMotherName" placeholder="Nome completo da mãe">
+                </div>
+                <div class="form-group">
+                    <label for="clientFatherName">Nome do Pai</label>
+                    <input type="text" id="clientFatherName" placeholder="Nome completo do pai">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="clientPhone">Telefone</label>
+                    <input type="tel" id="clientPhone" placeholder="(00) 90000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientEmail">E-mail</label>
+                    <input type="email" id="clientEmail" placeholder="email@exemplo.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="clientCEP">CEP</label>
+                <input type="text" id="clientCEP" placeholder="00000-000">
+                <button id="consultCEPBtn" class="btn secondary-btn" style="margin-top: 5px;">Consultar CEP</button>
+            </div>
+            <div class="form-group">
+                <label for="clientAddress">Endereço</label>
+                <input type="text" id="clientAddress" placeholder="Rua, número, bairro, cidade">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="clientNumber">Número</label>
+                    <input type="text" id="clientNumber" placeholder="Número">
+                </div>
+                <div class="form-group">
+                    <label for="clientNeighborhood">Bairro</label>
+                    <input type="text" id="clientNeighborhood" placeholder="Bairro">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="clientCity">Cidade</label>
+                    <input type="text" id="clientCity" placeholder="Cidade">
+                </div>
+                <div class="form-group">
+                    <label for="clientState">Estado</label>
+                    <input type="text" id="clientState" placeholder="Estado">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="clientComplement">Complemento</label>
+                <input type="text" id="clientComplement" placeholder="Complemento (opcional)">
+            </div>
+            <div class="form-group">
+                <label>Documentos (RG, Comprovante de Residência)</label>
+                <div class="file-upload-area">
+                    <input type="file" id="clientDocs" class="file-upload-input" multiple>
+                    <label for="clientDocs" class="file-upload-label">
+                        <span class="file-upload-text">Arraste e solte os arquivos aqui ou clique para selecionar</span>
+                    </label>
+                </div>
+                <div id="file-list" class="file-list"></div>
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelClient" class="btn secondary-btn">Cancelar</button>
+                <button id="saveClient" class="btn primary-btn">Salvar Cliente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Registrar Novo Empréstimo -->
+    <div id="loanModal" class="modal">
+        <div class="modal-content">
+            <h2>Registrar Novo Empréstimo</h2>
+            <div class="form-group">
+                <label for="loanClientSelect">Cliente</label>
+                <select id="loanClientSelect" required>
+                    <option value="" disabled selected>Selecione um cliente</option>
+                    <!-- Clientes serão populados dinamicamente -->
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="loanAmount">Valor do Empréstimo (R$)</label>
+                    <input type="number" id="loanAmount" placeholder="Ex: 1000.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="loanInterestRate">Taxa de Juros (%)</label>
+                    <input type="number" id="loanInterestRate" placeholder="Ex: 5" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="loanMoraInterestRate">Juros por Mora Diário (%)</label>
+                    <input type="number" id="loanMoraInterestRate" placeholder="Ex: 0.03" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="loanLateFeeRate">Multa por Atraso (%)</label>
+                    <input type="number" id="loanLateFeeRate" placeholder="Ex: 2" step="0.01">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="loanInstallments">Nº de Parcelas</label>
+                    <input type="number" id="loanInstallments" placeholder="Ex: 12" required>
+                </div>
+                <div class="form-group">
+                    <label for="loanFirstDueDate">Data do 1º Vencimento</label>
+                    <input type="text" id="loanFirstDueDate" placeholder="DD/MM/AAAA" required>
+                </div>
+            </div>
+            <div class="loan-summary">
+                <h3>Resumo do Empréstimo</h3>
+                <div class="summary-item">
+                    <span>Valor da Parcela:</span>
+                    <strong id="summaryInstallmentValue">R$ 0,00</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Valor Total com Juros:</span>
+                    <strong id="summaryTotalValue">R$ 0,00</strong>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelLoan" class="btn secondary-btn">Cancelar</button>
+                <button id="saveLoan" class="btn primary-btn">Registrar Empréstimo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalhes do Empréstimo e Pagamentos -->
+    <div id="loanDetailModal" class="modal">
+        <div class="modal-content large">
+            <h2 id="loanDetailTitle">Detalhes do Empréstimo</h2>
+            <div id="loanDetailContent" class="loan-details-summary">
+                <!-- Detalhes do empréstimo e cliente -->
+            </div>
+            <h3>Parcelas</h3>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nº</th>
+                            <th>Vencimento</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="installments-table-body">
+                        <!-- Parcelas serão inseridas aqui -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-buttons">
+                <button id="closeLoanDetail" class="btn secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmar Exclusão -->
+    <div id="confirmDeleteModal" class="modal">
+        <div class="modal-content">
+            <h2>Confirmar Exclusão</h2>
+            <p id="confirmDeleteText"></p>
+            <div class="modal-buttons">
+                <button id="cancelDeleteBtn" class="btn secondary-btn">Cancelar</button>
+                <button id="confirmDeleteBtn" class="btn danger-btn">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Administração de Usuários -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <h2>Administração de Usuários</h2>
+            
+            <!-- Formulário de Novo Usuário -->
+            <div class="admin-section">
+                <h3>Criar Novo Usuário</h3>
+                <div class="form-group">
+                    <label for="newUserEmail">Email:</label>
+                    <input type="email" id="newUserEmail" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="newUserPassword">Senha:</label>
+                    <input type="password" id="newUserPassword">
+                </div>
+                <button id="createUserBtn" class="btn primary-btn">Criar Usuário</button>
+            </div>
+
+            <!-- Lista de Usuários -->
+            <div class="admin-section">
+                <h3>Usuários do Sistema</h3>
+                <div id="usersList" class="users-list">
+                    <!-- Lista será preenchida dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Seção para Alterar E-mail de Solicitação -->
+            <div class="admin-section">
+                <h3>Configurar E-mail de Acesso</h3>
+                <div class="form-group">
+                    <label for="requestEmailInput">E-mail para Solicitações:</label>
+                    <input type="email" id="requestEmailInput" placeholder="email@exemplo.com">
+                </div>
+                <button id="saveRequestEmailBtn" class="btn primary-btn">Salvar E-mail</button>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="closeAdminModal" class="btn secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template para item da lista de usuários -->
+    <template id="userItemTemplate">
+        <div class="user-item">
+            <span class="user-email"></span>
+            <div class="user-actions">
+                <button class="btn warning-btn toggle-block-btn">Bloquear</button>
+                <button class="btn info-btn reset-password-btn">Resetar Senha</button>
+                <button class="btn danger-btn delete-user-btn">Excluir</button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal: Confirmar Ação -->
+    <div id="confirmActionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="confirmActionTitle">Confirmar Ação</h2>
+            <p id="confirmActionMessage"></p>
+            <div class="modal-buttons">
+                <button id="cancelActionBtn" class="btn secondary-btn">Cancelar</button>
+                <button id="confirmActionBtn" class="btn primary-btn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toast" class="toast"></div>
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <!-- JS principal -->
+    <script src="auth.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="report.js" defer></script> <!-- New script for report generation -->
+</body>
+</html>

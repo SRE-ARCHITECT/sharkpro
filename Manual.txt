@@ -1,0 +1,43 @@
+## 🚀 SharkPro | Manual do Sistema de Gestão de Empréstimos
+
+Bem-vindo ao SharkPro! Este manual guiará você pelas principais funcionalidades do sistema.
+
+### 1. **Login e Acesso**
+- **Entrar:** Utilize seu email e senha para acessar o sistema.
+- **Solicitar Acesso:** Caso não tenha uma conta, clique em "Solicitar Acesso", preencha seus dados e envie a solicitação. Você receberá suas credenciais por email.
+
+### 2. **Dashboard Principal**
+- Ao fazer login, você verá o dashboard com um resumo geral:
+  - **Total de Clientes:** Número total de clientes cadastrados.
+  - **Empréstimos Ativos:** Quantidade de empréstimos que ainda não foram totalmente pagos.
+  - **Cobranças Pendentes:** Empréstimos com parcelas atrasadas.
+  - **Valor Total em Aberto:** Soma dos valores restantes de todos os empréstimos ativos.
+- O dashboard também exibe uma lista de **Clientes com Dívidas Pendentes** para fácil visualização.
+
+### 3. **Gerenciamento de Clientes**
+- **Novo Cliente:** Na aba "Clientes", clique em "Novo Cliente" para cadastrar uma nova pessoa. Preencha os dados e salve.
+- **Buscar Cliente:** Utilize o campo de busca para encontrar um cliente pelo CPF.
+- **Ações do Cliente:**
+  - **Editar:** Altere os dados cadastrais de um cliente.
+  - **Relatório PDF:** Gere um relatório completo em PDF com os dados do cliente e seu histórico de empréstimos.
+  - **Excluir:** Remova um cliente do sistema (disponível apenas para administradores).
+
+### 4. **Gerenciamento de Empréstimos**
+- **Novo Empréstimo:** Na aba "Empréstimos", clique em "Novo Empréstimo". Selecione o cliente, defina o valor, juros, número de parcelas e a data do primeiro vencimento.
+- **Buscar Empréstimo:** Encontre empréstimos buscando pelo CPF do cliente.
+- **Ações do Empréstimo:**
+  - **Detalhes:** Visualize todas as parcelas de um empréstimo, seus status (paga, pendente, atrasada) e valores.
+  - **Registrar Pagamento:** Na tela de "Detalhes", marque uma parcela como "paga". O sistema calcula juros e multas para parcelas atrasadas.
+  - **Lembrete via WhatsApp:** Envie um lembrete de pagamento diretamente para o WhatsApp do cliente.
+  - **Editar:** Modifique os detalhes de um empréstimo existente.
+  - **Excluir:** Remova um empréstimo (disponível apenas para administradores).
+
+### 5. **Administração (Apenas para Admins)**
+- **Painel de Administração:** Acessível pelo ícone de engrenagem no cabeçalho.
+- **Gerenciar Usuários:** Crie, bloqueie, desbloqueie, resete a senha ou exclua usuários do sistema.
+
+### 6. **Recursos Adicionais**
+- **Modo Escuro:** Alterne entre o tema claro e escuro clicando no ícone de lua/sol.
+- **Consulta de Documentos:**
+  - **CPF:** O sistema pode abrir uma aba para consulta da situação cadastral na Receita Federal.
+  - **CEP:** Ao digitar um CEP no cadastro de cliente, o sistema busca e preenche o endereço automaticamente.
