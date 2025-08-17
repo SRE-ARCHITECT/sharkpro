@@ -1,0 +1,27 @@
+{
+  "name": "sharkpro-supabase",
+  "version": "2.0.0",
+  "description": "Sistema de Gestão de Empréstimos integrado com Supabase",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "emprestimos",
+    "gestao",
+    "financeiro",
+    "supabase",
+    "pwa"
+  ],
+  "author": "SharkPro Team",
+  "license": "MIT"
+}

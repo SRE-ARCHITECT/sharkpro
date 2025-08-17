@@ -428,6 +428,24 @@ a:hover {
     transform: translateX(-50%) translateY(0);
 }
 
+/* Toast types */
+.toast.toast-success {
+    background-color: var(--success-color);
+}
+
+.toast.toast-error {
+    background-color: var(--danger-color);
+}
+
+.toast.toast-warning {
+    background-color: var(--warning-color);
+    color: #212529;
+}
+
+.toast.toast-info {
+    background-color: var(--info-color);
+}
+
 @media (max-width: 600px) {
     .toast {
         left: 50%;
